@@ -44,6 +44,5 @@
     </head>
     <body class="font-sans antialiased">
         <x-inertia::app />
-        <h1>Test</h1>
     </body>
 </html>
