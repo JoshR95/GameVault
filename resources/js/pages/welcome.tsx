@@ -1,4 +1,5 @@
 import { Head, Link, usePage } from '@inertiajs/react';
+import AppLogoIcon from '@/components/app-logo-icon';
 import { dashboard, login } from '@/routes';
 import { register } from '@/routes';
 
@@ -8,19 +9,19 @@ export default function Welcome() {
     return (
         <>
             <Head title="Welcome" />
-            <div className="flex min-h-screen flex-col items-center bg-[#060a12] p-6 text-[#1b1b18] lg:justify-center lg:p-8 dark:bg-[#0a0a0a]">
+            <div className="flex min-h-screen flex-col items-center bg-background p-6 text-foreground lg:justify-center lg:p-8">
                 <header className="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl">
                     <nav className="flex items-center justify-end gap-4">
                     </nav>
                 </header>
                 <div className="flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0">
                     <main
-                        className="flex min-h-[380px] w-full max-w-[335px] flex-col-reverse overflow-hidden rounded-2xl shadow-[0_0_0_1px_rgba(255,193,7,0.5),0_0_48px_rgba(255,193,7,0.2),0_24px_48px_-12px_rgba(0,0,0,0.65)] lg:min-h-[500px] lg:max-w-4xl lg:flex-row"
+                        className="flex min-h-[380px] w-full max-w-[335px] flex-col-reverse overflow-hidden rounded-2xl shadow-vault-card lg:min-h-[500px] lg:max-w-4xl lg:flex-row"
                     >
-                        <div className="flex min-h-full flex-1 flex-col justify-center bg-[#0f1a2e] p-6 pb-12 text-center text-[13px] text-white lg:p-20">
-                            <h1 className="mb-1 text-4xl font-bold text-white">
+                        <div className="flex min-h-full flex-1 flex-col justify-center bg-card p-6 pb-12 text-center text-[13px] text-card-foreground lg:p-20">
+                            <h1 className="mb-1 text-4xl font-bold">
                                 Welcome to the Game{' '}
-                                <span className="text-[#FFC107]">Vault</span>
+                                <span className="text-primary">Vault</span>
                             </h1>
 
                             <ul className="mt-6 flex justify-center gap-3 text-sm leading-normal">
@@ -28,7 +29,7 @@ export default function Welcome() {
                                     {auth.user ? (
                                         <Link
                                             href={dashboard()}
-                                            className="inline-block rounded-sm border border-[#3E3E3A] px-5 py-1.5 text-sm leading-normal text-white hover:border-[#62605b]"
+                                            className="inline-block rounded-sm border border-border px-5 py-1.5 text-sm leading-normal hover:border-vault-border-hover"
                                         >
                                             Dashboard
                                         </Link>
@@ -36,13 +37,13 @@ export default function Welcome() {
                                         <>
                                             <Link
                                                 href={login()}
-                                                className="mr-3 inline-block rounded-sm border px-5 py-1.5 text-sm leading-normal text-white hover:border-[#3E3E3A]"
+                                                className="mr-3 inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal hover:border-border"
                                             >
                                                 Log in
                                             </Link>
                                             <Link
                                                 href={register()}
-                                                className="inline-block rounded-sm border  px-5 py-1.5 text-sm leading-normal text-white hover:border-[#62605b]"
+                                                className="inline-block rounded-sm border border-border px-5 py-1.5 text-sm leading-normal hover:border-vault-border-hover"
                                             >
                                                 Register
                                             </Link>
@@ -51,12 +52,8 @@ export default function Welcome() {
                                 </li>
                             </ul>
                         </div>
-                        <div className="relative flex aspect-[335/364] w-full shrink-0 items-center justify-center overflow-hidden bg-[#0f1a2e] p-6 lg:-ml-px lg:aspect-auto lg:min-h-full lg:w-[438px] lg:p-8">
-                            <img
-                                src="/images/gameVault1.png"
-                                alt="Game vault logo image"
-                                className="max-h-full max-w-full object-contain"
-                            />
+                        <div className="relative flex aspect-[335/364] w-full shrink-0 items-center justify-center overflow-hidden bg-card p-6 lg:-ml-px lg:aspect-auto lg:min-h-full lg:w-[438px] lg:p-8">
+                            <AppLogoIcon className="max-h-full w-full max-w-full" />
                         </div>
                     </main>
                 </div>
