@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 type Game = {
     id: number;
@@ -15,6 +15,14 @@ export default function GamesIndex({ games }: { games: Game[] }) {
 
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <h1 className="text-2xl font-semibold">My games</h1>
+                <div>
+                    <Link
+                        href="/games/create"
+                        className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                    >
+                        Add a game
+                    </Link>
+                </div>
 
                 {games.length === 0 ? (
                     <p className="text-muted-foreground">No games yet.</p>
@@ -28,7 +36,7 @@ export default function GamesIndex({ games }: { games: Game[] }) {
                                 <div className="font-medium">{game.title}</div>
                                 <div className="text-sm text-muted-foreground">
                                     {game.status} · {game.category}
-                                    {game.rating != null ? ` · ${game.rating}/5` : ''}
+                                    {game.rating != null ? ` · ${game.rating}/10` : ''}
                                 </div>
                             </li>
                         ))}

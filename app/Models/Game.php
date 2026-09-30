@@ -14,9 +14,9 @@ class Game extends Model
     // casts() says: “When this attribute comes out of the database (or goes in), treat it as this PHP type.” and stores it as an array
     protected function casts(): array
     {
-        // its returns the string number stored in the database to an integer
+        // Stored as decimal in SQLite; one decimal place (e.g. 9.5).
         return [
-            'rating' => 'integer',
+            'rating' => 'decimal:1',
         ];
     }
 
