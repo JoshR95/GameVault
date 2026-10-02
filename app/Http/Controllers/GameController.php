@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Http\Requests\StoreGameRequest;
 use Illuminate\Http\RedirectResponse;
+use App\Models\Game;
+use App\Http\Requests\UpdateGameRequest;
 
 class GameController extends Controller
 {
@@ -56,25 +58,45 @@ class GameController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     * Game $game loads the game whose id is in the url
      */
-    public function edit(string $id)
+    public function edit(Game $game): Response
     {
-        //
+        // if user is authorized it runs GamePolicy::update to edit game
+        $this->authorize('update', $game);
+
+        // inertia uses react to get current title, status etc to pre-fill form
+        return Inertia::render('games/edit', [
+            'game' => $game,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateGameRequest $request, Game $game): RedirectResponse
     {
-        //
+        $this->authorize('update', $game);
+
+        // update row with only allowed fields
+        $game->update($request->validated());
+
+        return redirect()->route('games.index');
     }
 
     /**
      * Remove the specified resource from storage.
+     * Game $game, laravel reads the id in the url, loads the game row in the database and passes it as $game. if the id doesnt match an exisiting one in the database its throws a 404
      */
-    public function destroy(string $id)
+    public function destroy(Game $game): RedirectResponse
     {
-        //
+        // authorization to only allow someone to delete if their user matches the id of the user in the database(person that created this game)
+        $this->authorize('delete', $game);
+
+        // runs sql to delete game from the database
+        $game->delete();
+
+        // redirects back to this users collection of games index
+        return redirect()->route('games.index');
     }
 }

@@ -33,7 +33,13 @@ export default function GamesIndex({ games }: { games: Game[] }) {
                                 key={game.id}
                                 className="rounded-lg border border-sidebar-border/70 p-3 dark:border-sidebar-border"
                             >
-                                <div className="font-medium">{game.title}</div>
+                                {/* this turns the games title into a clickable link so it can be edited */}
+                                <Link
+                                    href={`/games/${game.id}/edit`}
+                                    className="font-medium hover:underline"
+                                >
+                                    {game.title}
+                                </Link>
                                 <div className="text-sm text-muted-foreground">
                                     {game.status} · {game.category}
                                     {game.rating != null ? ` · ${game.rating}/10` : ''}
