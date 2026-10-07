@@ -12,18 +12,67 @@ use App\Http\Requests\UpdateGameRequest;
 
 class GameController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    
     public function index(Request $request): Response
     {
-        //
-        $games = $request->user()->games()->latest()->get();
 
+
+        // this reads the optional status filter from the url i.e /games?status=played -> $status is 'played'.
+        $query = $request->user()->games();
+
+        // --- Filter: status ---
+        // this grabs played/want_to_play associated from games in the url and stores in status
+        $status = $request->query('status');
+        // if status is a known value, filter by it; otherwise don’t filter by status
+        if ($status === 'want_to_play' || $status === 'played') {
+            $query->where('status', $status);
+        }
+
+        // --- Filter: category ---
+        // if category is known filter by it
+        $category = $request->query('category');
+        // here where checking if category is a string rather than list every game category
+        if (is_string($category) && $category !== '') {
+            // this only loads games whose category column in the database equals the value passed into $category
+            $query->where('category', $category);
+        }
+        
+        // --- Sort (whitelist — never sort by raw user input) ---
+        $sort = $request->query('sort', 'latest');
+
+        // matches we can sort by. We use match so the user only use a menu of sorts we want them to be allowed to sort by
+        match ($sort){
+            // highest rating first 
+            'rating_desc' => $query->orderByDesc('rating')->orderBy('title'),
+            // lowest rating first
+            'rating_asc' => $query->orderBy('rating')->orderBy('title'),
+            // sort alphabetically
+            'title' => $query->orderBy('title'),
+            // defaults to sort by latest added first
+            default => $query->latest(),    
+        };
+
+        // this is where the page is built with the games and the sort conditions above are applied
+        $games = $query->get();
+
+        // Categories this user already uses — for the category dropdown
+        $categories = $request->user()->games()
+            ->select('category')
+            ->distinct()
+            ->orderBy('category')
+            ->pluck('category');
+
+        // here were using inertia to actually render the data from the database query
         return Inertia::render('games/index', [
             'games' => $games,
+            'filters' => [
+                'status' => $status,
+                'category' => $category,
+                'sort' => $sort,
+            ],
+            'categories' => $categories,
         ]);
-    
     }
 
     /**
